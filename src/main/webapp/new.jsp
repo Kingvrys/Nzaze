@@ -28,27 +28,11 @@
         <div class="container">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2 class="h4 text-secondary">Guest Management Dashboard</h2>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addGuestModal">
-                    + Add New Guest
-                </button>
-            </div>
-
-            <div class="card shadow-sm mb-4">
-                <div class="card-header bg-warning text-dark fw-bold d-flex justify-content-between align-items-center">
-                    <span>Guest Stay Leaderboard</span>
-                    <small id="leaderboardStatus" class="fw-normal">Loading...</small>
-                </div>
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle mb-0">
-                            <thead>
-                                <tr><th>Rank</th><th>Guest</th><th>Number of stays</th></tr>
-                            </thead>
-                            <tbody id="leaderboardBody">
-                                <tr><td colspan="3" class="text-center py-3 text-muted">Loading leaderboard...</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="d-flex gap-2">
+                    <a class="btn btn-outline-warning" href="LeaderboardPageServlet">Leaderboard</a>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addGuestModal">
+                        + Add New Guest
+                    </button>
                 </div>
             </div>
 
@@ -207,30 +191,6 @@
         const resultDiv = document.getElementById("resultContainer");
         let searchTimer;
 
-        function loadLeaderboard() {
-            fetch("LeaderboardServlet")
-                .then(response => response.json())
-                .then(data => {
-                    const body = document.getElementById("leaderboardBody");
-                    const status = document.getElementById("leaderboardStatus");
-                    if (!data.success || !data.entries || data.entries.length === 0) {
-                        body.innerHTML = '<tr><td colspan="3" class="text-center py-3 text-muted">No guest stays recorded yet.</td></tr>';
-                        status.textContent = "No stays yet";
-                        return;
-                    }
-                    body.innerHTML = data.entries.map(entry =>
-                        `<tr><td class="fw-bold">\${entry.rank}</td><td>\${escapeHtml(entry.name)}</td><td class="fw-bold">\${entry.stays}</td></tr>`
-                    ).join("");
-                    status.textContent = "Updated just now";
-                })
-                .catch(() => {
-                    document.getElementById("leaderboardBody").innerHTML = '<tr><td colspan="3" class="text-center py-3 text-danger">Could not load leaderboard.</td></tr>';
-                    document.getElementById("leaderboardStatus").textContent = "Unavailable";
-                });
-        }
-
-        loadLeaderboard();
-
         searchInput.addEventListener("input", function() {
             clearTimeout(searchTimer);
             const term = searchInput.value.trim();
@@ -296,9 +256,6 @@
                 .then(response => response.json())
                 .then(data => {
                     resultDiv.innerHTML = `<div class="alert \${data.success ? "alert-success" : "alert-danger"} mt-2">\${escapeHtml(data.message)}</div>`;
-                    if (data.success) {
-                        loadLeaderboard();
-                    }
                 })
                 .catch(() => resultDiv.innerHTML = '<div class="alert alert-danger mt-2">Could not record the check-in.</div>');
         }
