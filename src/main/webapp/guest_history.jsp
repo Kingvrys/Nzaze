@@ -14,6 +14,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guest History - Nzaze</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 <body class="bg-light">
     <main class="container py-5">
@@ -29,6 +30,26 @@
             <div class="col-md-3"><div class="card shadow-sm"><div class="card-body"><small class="text-muted">Total stays</small><div class="display-6"><%= history.size() %></div></div></div></div>
             <div class="col-md-3"><div class="card shadow-sm"><div class="card-body"><small class="text-muted">Room</small><div class="h4"><%= request.getAttribute("roomNumber") != null ? request.getAttribute("roomNumber") : "Not assigned" %></div></div></div></div>
             <div class="col-md-6"><div class="card shadow-sm"><div class="card-body"><small class="text-muted">Contact</small><div><%= request.getAttribute("email") != null ? request.getAttribute("email") : "No email" %> | <%= request.getAttribute("phone") %></div></div></div></div>
+        </div>
+        <div class="card shadow-sm mb-4">
+            <div class="card-header fw-bold">Guest account access</div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label text-muted">Username</label>
+                        <div><code><%= request.getAttribute("guestUsername") != null ? request.getAttribute("guestUsername") : "Not available" %></code></div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-muted">Password</label>
+                        <div class="input-group">
+                            <input id="guestPassword" class="form-control" type="password" value="<%= request.getAttribute("guestPassword") != null ? request.getAttribute("guestPassword") : "" %>" readonly>
+                            <button id="togglePassword" class="btn btn-outline-secondary" type="button" aria-label="Reveal password" title="Reveal password">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="card shadow-sm">
             <div class="card-header fw-bold">Stay history</div>
@@ -48,5 +69,16 @@
             </div>
         </div>
     </main>
+    <script>
+        document.getElementById("togglePassword").addEventListener("click", function () {
+            const password = document.getElementById("guestPassword");
+            const icon = this.querySelector("i");
+            const revealed = password.type === "text";
+            password.type = revealed ? "password" : "text";
+            icon.className = revealed ? "bi bi-eye" : "bi bi-eye-slash";
+            this.setAttribute("aria-label", revealed ? "Reveal password" : "Hide password");
+            this.title = revealed ? "Reveal password" : "Hide password";
+        });
+    </script>
 </body>
 </html>

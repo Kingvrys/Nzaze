@@ -35,8 +35,9 @@ public class GuestHistoryServlet extends HttpServlet {
         }
 
         String guestId = request.getParameter("guestId");
-        String guestSql = "SELECT guest_id, first_name, last_name, email, phone_number, room_number, guest_code "
-                + "FROM guests WHERE guest_id = ?";
+        String guestSql = "SELECT g.guest_id, g.first_name, g.last_name, g.email, g.phone_number, "
+            + "g.room_number, g.guest_code, u.username, u.password_hash "
+            + "FROM guests g LEFT JOIN users u ON u.user_id = g.user_id WHERE g.guest_id = ?";
         String historySql = "SELECT stay_id, check_in_date, check_out_date FROM guest_stays "
                 + "WHERE guest_id = ? ORDER BY check_in_date DESC";
         try {
@@ -58,6 +59,8 @@ public class GuestHistoryServlet extends HttpServlet {
                     request.setAttribute("phone", guest.getString("phone_number"));
                     request.setAttribute("roomNumber", guest.getString("room_number"));
                     request.setAttribute("guestCode", guest.getString("guest_code"));
+                    request.setAttribute("guestUsername", guest.getString("username"));
+                    request.setAttribute("guestPassword", guest.getString("password_hash"));
                 }
 
                 historyStatement.setInt(1, id);
