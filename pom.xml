@@ -64,9 +64,6 @@
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>11.0.15</version>
-                <configuration>
-                    <useTestClasspath>true</useTestClasspath>
-                </configuration>
             </plugin>
         </plugins>
     </build>
