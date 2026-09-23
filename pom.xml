@@ -64,6 +64,11 @@
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>11.0.15</version>
+                <configuration>
+                    <webApp>
+                        <contextPath>/Nzaze</contextPath>
+                    </webApp>
+                </configuration>
             </plugin>
         </plugins>
     </build>
